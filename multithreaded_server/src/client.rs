@@ -1,11 +1,10 @@
-
 use std::{
     io::{self, Read, Write},
     net::{SocketAddr, TcpStream, ToSocketAddrs},
     time::Duration,
 };
 use prost::Message;
-use embedded_recruitment_task::message::{client_message, ServerMessage};
+use crate::messages::{client_message, ServerMessage};
 use log::info;
 
 pub struct Client {
@@ -50,7 +49,7 @@ impl Client {
     pub fn send(&mut self, message: client_message::Message) -> io::Result<()> {
         if let Some(ref mut stream) = self.stream {
             let mut buffer = Vec::new();
-            message.encode(&mut buffer).unwrap();
+            message.encode(&mut buffer); // Directly call `encode` without `unwrap`
             stream.write_all(&buffer)?;
             stream.flush()?;
             info!("Sent message: {:?}", message);

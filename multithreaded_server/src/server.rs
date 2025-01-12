@@ -1,14 +1,12 @@
-
 use std::{
     net::{TcpListener, TcpStream},
     io::{self, Read, Write},
     sync::{Arc, Mutex},
-    thread,
 };
 use threadpool::ThreadPool;
 use log::{info, error};
 use prost::Message;
-use embedded_recruitment_task::message::{EchoMessage, ServerMessage};
+use crate::messages::{server_message, ServerMessage, AddResponse};
 
 pub struct Server {
     listener: TcpListener,
@@ -29,7 +27,6 @@ impl Server {
         for stream in self.listener.incoming() {
             let stream = stream?;
             let is_running = Arc::clone(&self.is_running);
-
             pool.execute(move || {
                 if let Err(e) = handle_client(stream) {
                     error!("Error handling client: {}", e);
@@ -40,6 +37,7 @@ impl Server {
                 break;
             }
         }
+
         info!("Server stopped.");
         Ok(())
     }
@@ -50,24 +48,51 @@ impl Server {
         info!("Shutdown signal sent.");
     }
 }
-
 fn handle_client(mut stream: TcpStream) -> io::Result<()> {
     let mut buffer = [0; 512];
     let bytes_read = stream.read(&mut buffer)?;
-
     if bytes_read == 0 {
         info!("Client disconnected.");
         return Ok(());
     }
 
-    if let Ok(message) = EchoMessage::decode(&buffer[..bytes_read]) {
-        info!("Received: {}", message.content);
-        let response = ServerMessage { message: Some(server_message::Message::EchoMessage(message)) };
-        let mut payload = Vec::new();
-        response.encode(&mut payload).unwrap();
-        stream.write_all(&payload)?;
+    info!("Received {} bytes from client.", bytes_read);
+
+    // Decode the raw bytes into `ClientMessage`
+    if let Ok(client_message) = crate::messages::ClientMessage::decode(&buffer[..bytes_read]) {
+        info!("Decoded ClientMessage: {:?}", client_message);
+
+        match client_message.message {
+            Some(crate::messages::client_message::Message::EchoMessage(echo)) => {
+                info!("Received EchoMessage: {}", echo.content);
+                let response = ServerMessage {
+                    message: Some(server_message::Message::EchoMessage(echo)),
+                };
+                let mut payload = Vec::new();
+                response.encode(&mut payload).unwrap();
+                stream.write_all(&payload)?;
+                info!("Sent EchoMessage response to client.");
+            }
+            Some(crate::messages::client_message::Message::AddRequest(add)) => {
+                info!("Received AddRequest: {} + {}", add.a, add.b);
+                let result = add.a + add.b;
+                let response = ServerMessage {
+                    message: Some(server_message::Message::AddResponse(
+                        AddResponse { result },
+                    )),
+                };
+                let mut payload = Vec::new();
+                response.encode(&mut payload).unwrap();
+                stream.write_all(&payload)?;
+                info!("Sent AddResponse to client.");
+            }
+            None => {
+                error!("Received a ClientMessage with no content.");
+            }
+        }
     } else {
         error!("Failed to decode message.");
     }
+
     Ok(())
 }
