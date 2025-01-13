@@ -1,71 +1,37 @@
-# Step 1: Open the GitHub Editor
-Go to your GitHub repository's README.md file:
-https://github.com/Spot123456/embedded-recruitment-task-0.0.1/edit/main/README.md
-
-This will open the GitHub file editor.
-
-# Step 2: Replace the Existing Content
-Delete all the existing content in the README.md file.
-
-Copy the updated README.md content I provided earlier (scroll up to find it).
-
-Paste the new content into the GitHub editor.
-
-# Step 3: Commit the Changes
-Scroll down to the Commit changes section at the bottom of the page.
-
-Add a commit message, such as:
-
-Updated README.md with detailed documentation
-Optionally, add a description if needed.
-
-Select Commit directly to the main branch.
-
-Click the green Commit changes button.
-
-# Step 4: Verify the Changes
-Go back to your repository's main page:
-https://github.com/Spot123456/embedded-recruitment-task-0.0.1
-
-Verify that the README.md now displays the updated content.
-
-Optional: Add Badges
-If you want to add badges (e.g., for build status, license, etc.), you can include them at the top of the README.md. For example:
-
-![Rust](https://img.shields.io/badge/Rust-v1.60+-orange)
-![License](https://img.shields.io/badge/License-MIT-blue)
-Full Updated README.md Content
-Here’s the full content again for easy copying:
 
 # 🚀 Multithreaded Rust Server
 
-A high-performance, multithreaded server implemented in Rust using the `threadpool` crate. This project includes a server, client, and test suite to demonstrate efficient client-server communication using Protocol Buffers.
+A high-performance, multithreaded server implemented in Rust using the `threadpool` crate. This project demonstrates efficient client-server communication using Protocol Buffers and includes a server, client, and test suite.
 
 ---
 
 ## 📂 Project Structure
-.
-├── Cargo.toml # Rust dependencies and configuration
-├── build.rs # Build script for generating Protobuf code
-├── proto/ # Protocol Buffers definitions
-│ └── messages.proto
-├── src/
-│ ├── main.rs # Main entry point of the server
-│ ├── lib.rs # Library module exposing server, client, and messages
-│ ├── server.rs # Server implementation
-│ ├── client.rs # Client implementation
-│ └── messages.rs # Generated Protobuf code
-└── tests/
-└── client_test.rs # Test suite for the server
 
+```plaintext
+.
+├── Cargo.toml            # Rust dependencies and configuration
+├── build.rs              # Build script for generating Protobuf code
+├── proto/                # Protocol Buffers definitions
+│   └── messages.proto
+├── src/
+│   ├── main.rs           # Main entry point of the server
+│   ├── lib.rs            # Library module exposing server, client, and messages
+│   ├── server.rs         # Server implementation
+│   ├── client.rs         # Client implementation
+│   └── messages.rs       # Generated Protobuf code
+└── tests/
+    └── client_test.rs    # Test suite for the server
+```
+
+---
 
 ## 🛠️ Prerequisites
 
 Before running the project, ensure you have the following installed:
 
-- **Rust**: Latest stable version recommended. Install it from [rustup.rs](https://rustup.rs/).
-- **Cargo**: Rust's package manager, included with Rust.
-- **Protocol Buffers**: Ensure `protoc` (Protocol Buffers compiler) is installed. Follow the [official guide](https://grpc.io/docs/protoc-installation/).
+- **Rust**: Latest stable version. Install via [rustup.rs](https://rustup.rs/).
+- **Cargo**: Rust's package manager (included with Rust).
+- **Protocol Buffers**: Install the `protoc` compiler. Follow the [official guide](https://grpc.io/docs/protoc-installation/).
 
 ---
 
@@ -74,105 +40,134 @@ Before running the project, ensure you have the following installed:
 ### 1. Clone the Repository
 
 Clone the repository to your local machine:
+
 ```bash
 git clone https://github.com/Spot123456/embedded-recruitment-task-0.0.1/multithreaded_server.git
 cd multithreaded_server
+```
 
+---
 
-2. Build the Project
+### 2. Build the Project
+
 Compile the project using Cargo:
 
 ```bash
 cargo build
+```
 
-3. Run the Server
-Start the server by running:
+---
+
+### 3. Run the Server
+
+Start the server:
 
 ```bash
 cargo run
-The server will start listening on localhost:8080. You should see logs like this:
+```
 
+The server will start listening on `localhost:8080`. You should see logs like:
+
+```plaintext
 [INFO] Server is running on localhost:8080
+```
 
-4. Run the Test Suite
+---
+
+### 4. Run the Test Suite
+
 To verify the server's functionality, run the test suite:
 
 ```bash
 cargo test -- --nocapture
-The --nocapture flag ensures that test logs are displayed in the terminal. You should see output like this:
+```
 
+The `--nocapture` flag ensures that test logs are displayed in the terminal. Sample output:
+
+```plaintext
 running 1 test
 [INFO] Starting test_client_echo_message...
-[INFO] Creating server...
-[INFO] Starting server thread...
-[INFO] Connecting client to server...
-[INFO] Connected to the server!
-[INFO] Sending EchoMessage to server...
-[INFO] Sent message: EchoMessage { content: "Hello, World!" }
-[INFO] Waiting for response from server...
-[INFO] Received 12 bytes from server.
-[INFO] Received EchoMessage from server: Hello, World!
-[INFO] Disconnecting client...
-[INFO] Disconnected from the server!
-[INFO] Stopping server...
-[INFO] Shutdown signal sent.
-[INFO] Joining server thread...
 [INFO] Server stopped.
-[INFO] Test completed successfully!
 test test_client_echo_message ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
-5. Connecting a Client
-The client implementation in client.rs can be used to connect to the server. Modify the client code as needed to send messages to the server.
+test result: ok. 1 passed; 0 failed; 0 ignored
+```
 
-# 🧩 Features
-Multithreaded Server: Uses a thread pool to handle multiple client connections efficiently.
+---
 
-Protocol Buffers: Messages are encoded and decoded using Protocol Buffers for efficient communication.
+### 5. Connect a Client
 
-Test Suite: Includes tests to verify server functionality and client-server communication.
+Use the client implementation in `client.rs` to connect to the server. Modify the client as needed to send messages.
 
-Logging: Uses the log and env_logger crates for structured logging.
+---
 
-# 📦 Dependencies
-This project uses the following Rust crates:
+## 🧩 Features
 
-log: For logging messages.
+- **Multithreaded Server**: Uses a thread pool for efficient client connection handling.
+- **Protocol Buffers**: Encodes and decodes messages for efficient communication.
+- **Test Suite**: Verifies server functionality and client-server communication.
+- **Logging**: Implements structured logging with `log` and `env_logger`.
 
-env_logger: For initializing the logger.
+---
 
-prost: For encoding and decoding messages using Protocol Buffers.
+## 📦 Dependencies
 
-threadpool: For creating a thread pool to handle client connections.
+This project uses the following crates:
 
-prost-build: For generating Rust code from Protocol Buffers definitions.
+- `log`: For logging.
+- `env_logger`: Initializes the logger.
+- `prost`: Encodes and decodes Protocol Buffer messages.
+- `threadpool`: Manages the thread pool for concurrent connections.
+- `prost-build`: Generates Rust code from Protocol Buffer definitions.
 
-# 📚 Learning Resources
-If you're new to Rust, here are some recommended resources:
+---
 
-Rust Playlist: Rust Programming Tutorials
+## 📚 Learning Resources
 
-Rust Book: The Rust Programming Language
+If you're new to Rust, here are some resources:
 
-Rust by Example: Rust by Example
+- [Rust Playlist](https://www.youtube.com/playlist?list=PL5dTjWUk_cPYOPWpUwmOLatvUB9ZwHH7p): Rust Programming Tutorials.
+- [Rust Book](https://doc.rust-lang.org/book/): The Rust Programming Language.
+- [Rust by Example](https://doc.rust-lang.org/rust-by-example/): Rust by Example.
 
-📝 Notes
-The server is designed to handle multiple clients concurrently using a thread pool.
+---
 
-The test suite includes a basic test (test_client_echo_message) to verify that the server echoes messages correctly.
+## 📝 Notes
 
-You can extend the server and client to support additional message types and functionality.
+- The server handles multiple clients concurrently using a thread pool.
+- The test suite includes a basic `test_client_echo_message` to verify the server echoes messages correctly.
+- You can extend the server and client to support additional message types and functionality.
 
+---
 
-🙌 Contributing
-Contributions are welcome! If you'd like to contribute, please follow these steps:
+## 🙌 Contributing
 
-Fork the repository.
+Contributions are welcome! Here's how to get started:
 
-Create a new branch (git checkout -b feature/YourFeatureName).
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
+5. Open a pull request.
 
-Commit your changes (git commit -m 'Add some feature').
+---
 
-Push to the branch (git push origin feature/YourFeatureName).
+## 🛡️ Optional: Add Badges
 
-Open a pull request.
+To add badges for build status, license, etc., include them at the top of the README:
+
+```markdown
+![Rust](https://img.shields.io/badge/Rust-v1.60+-orange)
+
+```
+
+---
