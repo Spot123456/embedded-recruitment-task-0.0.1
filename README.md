@@ -126,7 +126,7 @@ This project uses the following crates:
 
 If you're new to Rust, here are some resources:
 
-- [Rust Playlist](https://www.youtube.com/playlist?list=PL5dTjWUk_cPYOPWpUwmOLatvUB9ZwHH7p): Rust Programming Tutorials.
+- [Rust Playlist](https://www.youtube.com/watch?v=lzKeecy4OmQ&t=10941s): Rust Programming Tutorials.
 - [Rust Book](https://doc.rust-lang.org/book/): The Rust Programming Language.
 - [Rust by Example](https://doc.rust-lang.org/rust-by-example/): Rust by Example.
 
